@@ -1,7 +1,7 @@
-const SERVER_URL = 'http://localhost:8000'
+const SERVER_URL = 'http://127.0.0.1:8000'
 
 async function serverAddSudent(obj) {
-    let response = await fetch(SERVER_URL + '/api/students', {
+    let response = await fetch(SERVER_URL + '/api/students/', {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(obj),
@@ -63,7 +63,7 @@ function $getNewStudentTR(studObj) {
     $btnDelete.textContent = "Delete"
 
     $tdFIO.textContent = `${studObj.first_name} ${studObj.last_name}`
-    $tdBirthday.textContent = formatDate(new Date(studObj.day_of_birth))
+    $tdBirthday.textContent = formatDate(new Date(studObj.date_of_birth))
     $tdfaculty.textContent = studObj.faculty
     $tdStudyStart.textContent = studObj.year_joined
     $tdCountry.textContent = studObj.country
@@ -74,7 +74,7 @@ function $getNewStudentTR(studObj) {
     })
 
     $tdDelete.append($btnDelete)
-    $tr.append($tdFIO, $tdBirthday, $tdfaculty, $tdStudyStart, $tdDelete)
+    $tr.append($tdFIO, $tdBirthday, $tdfaculty, $tdStudyStart, $tdCountry, $tdDelete)
     return $tr
 }
 
@@ -93,12 +93,13 @@ function redner(arr) {
 
 document.getElementById("add-form").addEventListener("submit", async function(event) {
     event.preventDefault()
-
+    let birthday = new Date(document.getElementById("birthday-inp").value)
+    birthday = `${birthday.getFullYear()}-${birthday.getMonth()}-${birthday.getDay()}`
     let newStudentObj = {
         first_name: document.getElementById("name-inp").value,
         last_name: document.getElementById("lastname-inp").value,
         year_joined: document.getElementById("studyStart-inp").value,
-        date_of_birth: new Date(document.getElementById("birthday-inp").value),
+        date_of_birth: birthday,
         faculty: document.getElementById("faculty-inp").value,
         country: document.getElementById("country-inp").value,
     }
